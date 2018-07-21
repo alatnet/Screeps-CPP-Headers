@@ -1116,9 +1116,9 @@ namespace Screeps {
 		{ "XGHO2", 90 }
 	});
 
-	constexpr int PORTAL_UNSTABLE = 10*24*3600*1000;
-	constexpr int PORTAL_MIN_TIMEOUT = 12*24*3600*1000;
-	constexpr int PORTAL_MAX_TIMEOUT = 22*24*3600*1000;
+	constexpr int PORTAL_UNSTABLE = 10 * 24 * 3600 * 1000;
+	constexpr int PORTAL_MIN_TIMEOUT = 12 * 24 * 3600 * 1000;
+	constexpr int PORTAL_MAX_TIMEOUT = 22 * 24 * 3600 * 1000;
 	
 	const int POWER_BANK_RESPAWN_TIME = 50000;
 	

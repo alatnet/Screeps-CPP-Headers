@@ -5,7 +5,7 @@
 #include "Structure.h"
 
 namespace Screeps {
-	class OwnedStructure : public Structure{
+	class OwnedStructure : public Structure {
 	public:
 		OwnedStructure();
 	

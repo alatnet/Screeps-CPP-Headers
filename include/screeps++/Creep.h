@@ -2,7 +2,10 @@
 
 #include "Common.h"
 
+#include <emscripten.h>
+#include <emscripten/val.h>
 #include <vector>
+#include <map>
 
 #include "RoomObject.h"
 #include "Structure.h"
@@ -25,7 +28,7 @@ namespace Screeps {
 
 		std::vector<Body> body;
 		
-		var Carry;
+		std::map<SCREEPS_STR,int> Carry;
 		
 		int carryCapacity;
 		int fatigue;
@@ -33,7 +36,7 @@ namespace Screeps {
 		int hitsMax;
 		SCREEPS_STR id;
 
-		var memory;
+		val memory;
 		
 		bool my;
 		SCREEPS_STR name;
@@ -55,7 +58,7 @@ namespace Screeps {
 		int harvest(TargetableResource target);
 		int heal(Creep target);
 		int move(int direction);
-		int moveByPath(/*array/string path*/); //FIGURE THIS OUT!
+		int moveByPath(val path); //FIGURE THIS OUT!
 		
 	public:
 		struct MoveToOps {

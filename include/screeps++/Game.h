@@ -2,10 +2,10 @@
 
 #include "Common.h"
 
-#include <map>
-#include <vector>
 #include <emscripten.h>
 #include <emscripten/val.h>
+#include <map>
+#include <vector>
 
 #include "ConstructionSite.h"
 #include "Creep.h"

@@ -21,7 +21,9 @@ namespace Screeps {
 			int get(int x, int y);
 			CostMatrix clone();
 			std::vector<int> serialize();
-			CostMatrix deserialize(std::vector<int> val);
+
+		public:
+			static CostMatrix deserialize(std::vector<int> val);
 		};
 
 	public:

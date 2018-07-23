@@ -1,15 +1,20 @@
 #pragma once
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "Structure.h"
-#include "RoomPosition.h"
 
 namespace Screeps {
-	class StruturePortal : public Structure {
+	class RoomPosition;
+
+	class StructurePortal : public Structure {
 	public:
-		StruturePortal();
+		StructurePortal();
+		StructurePortal(emscripten::val structurePortal);
 
 	public:
-		RoomPosition destination;
+		RoomPosition *destination;
 		int ticksToDecay;
 	};
 }

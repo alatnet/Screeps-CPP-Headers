@@ -1,12 +1,17 @@
 #pragma once
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "OwnedStructure.h"
-#include "Creep.h"
 
 namespace Screeps {
+	class Creep;
+
 	class StructureLab : public OwnedStructure {
 	public:
 		StructureLab();
+		StructureLab(emscripten::val structureLab);
 
 	public:
 		int cooldown;
@@ -17,7 +22,7 @@ namespace Screeps {
 		int mineralCapacity;
 
 	public:
-		int boostCreep(Creep creep, int bodyPartsCount=-1);
-		int runReaction(StructureLab lab1, StructureLab lab2);
+		int boostCreep(Creep *creep, int bodyPartsCount=-1);
+		int runReaction(StructureLab *lab1, StructureLab *lab2);
 	};
 }

@@ -9,6 +9,6 @@ namespace Screeps {
 		TargetableObject();
 		
 	public:
-		val jsVar;
+		emscripten::val *jsVar;
 	};
 }

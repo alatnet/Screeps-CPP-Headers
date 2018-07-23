@@ -1,12 +1,17 @@
 #pragma once
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "OwnedStructure.h"
-#include "RoomPosition.h"
 
 namespace Screeps {
+	class RoomPosition;
+
 	class StructureNuker : public OwnedStructure {
 	public:
 		StructureNuker();
+		StructureNuker(emscripten::val structureNuker);
 
 	public:
 		int energy;
@@ -16,6 +21,6 @@ namespace Screeps {
 		int cooldown;
 
 	public:
-		int launchNuke(RoomPosition pos);
+		int launchNuke(RoomPosition *pos);
 	};
 }

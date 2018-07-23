@@ -1,11 +1,15 @@
 #pragma once
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "OwnedStructure.h"
 
 namespace Screeps {
 	class StructureController : public OwnedStructure {
 	public:
 		StructureController();
+		StructureController(emscripten::val structureController);
 
 	public:
 		int level;
@@ -26,7 +30,7 @@ namespace Screeps {
 			SCREEPS_STR username;
 			SCREEPS_STR text;
 			int time;
-			val Date;
+			emscripten::val *Date;
 		};
 
 		Sign sign;

@@ -2,15 +2,18 @@
 
 #include "Common.h"
 
+#include <emscripten.h>
+#include <emscripten/val.h>
 #include <vector>
-#include <pair>
-
-#include "RoomPosition.h"
+#include <utility>
 
 namespace Screeps {
+	class RoomPosition;
+
 	class RoomVisual {
 	public:
 		RoomVisual(SCREEPS_STR roomName = "");
+		RoomVisual(emscripten::val roomVisual);
 
 	public:
 		SCREEPS_STR roomName;
@@ -29,11 +32,11 @@ namespace Screeps {
 		struct CommonFilledStyle : CommonStyle {
 			SCREEPS_STR fill;
 			SCREEPS_STR stroke;
-			SCREEPS_STR strokeWidth;
+			float strokeWidth;
 
 			CommonFilledStyle() {
 				this->fill = "#ffffff";
-				this->stroke="undefined"
+				this->stroke="undefined";
 				this->strokeWidth = 0.1f;
 			}
 		};
@@ -42,7 +45,7 @@ namespace Screeps {
 			float width;
 			SCREEPS_STR color;
 
-			Style() {
+			LineStyle() {
 				this->width = 0.1f;
 				this->color = "#ffffff";
 			};
@@ -65,13 +68,13 @@ namespace Screeps {
 		RoomVisual& rect(int x, int y, int width, int height, CommonFilledStyle style = CommonFilledStyle());
 		RoomVisual& rect(RoomPosition topLeftPos, int width, int height, CommonFilledStyle style = CommonFilledStyle());
 
-		RoomVisual& poly(std::vector<std::pair<int, int>>, CommonFilledStyle style = CommonFilledStyle());
-		RoomVisual& poly(std::vector<RoomPosition>, CommonFilledStyle style = CommonFilledStyle());
+		RoomVisual& poly(std::vector<std::pair<int, int>> pos, CommonFilledStyle style = CommonFilledStyle());
+		RoomVisual& poly(std::vector<RoomPosition> pos, CommonFilledStyle style = CommonFilledStyle());
 
 		struct TextStyle {
 			SCREEPS_STR color;
 			union {
-				float fontSize
+				float fontSize;
 				SCREEPS_STR font;
 			};
 			SCREEPS_STR stroke;

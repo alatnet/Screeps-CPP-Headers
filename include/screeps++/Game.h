@@ -7,34 +7,37 @@
 #include <map>
 #include <vector>
 
-#include "ConstructionSite.h"
-#include "Creep.h"
-#include "Flag.h"
 #include "Room.h"
-#include "StructureSpawn.h"
-#include "Structure.h"
 
 namespace Screeps {
+	class ConstructionSite;
+	class Creep;
+	class Flag;
+	class StructureSpawn;
+	class Structure;
+
 	class Game {
 	public:
 		Game();
+		Game(emscripten::val game);
 		
 	public:
-		void* getObjectById(char[] id);
+		emscripten::val* getObjectById(SCREEPS_STR id);
 		void notify(SCREEPS_STR msg, int groupInterval=0);
 
 	public:
-		ConstructionSite constructionSites;
+		ConstructionSite *constructionSites;
 		
 	public:
 		class CPU {
 		public:
 			CPU();
+			CPU(emscripten::val cpu);
 		public:
 			int limit;
 			int tickLimit;
 			int bucket;
-			std::map<const char*,int> shardLimits;
+			std::map<SCREEPS_STR,int> shardLimits;
 		public:
 			std::map<SCREEPS_STR, int> getHeapStatistics();
 			float getUsed();
@@ -45,6 +48,7 @@ namespace Screeps {
 		class Map {
 		public:
 			Map();
+			Map(emscripten::val map);
 		public:
 			std::map<SCREEPS_STR, SCREEPS_STR> describeExits(SCREEPS_STR);
 
@@ -63,12 +67,12 @@ namespace Screeps {
 				std::map<SCREEPS_STR, Room> fromRoom,
 				std::map<SCREEPS_STR, Room> toRoom,
 				std::vector<FindRouteRet> &ret,
-				function<float(SCREEPS_STR, SCREEPS_STR) *opts = nullptr
+				std::function<float(SCREEPS_STR, SCREEPS_STR)> opts = nullptr
 			);
-			
+
 			int getRoomLinearDistance(SCREEPS_STR roomName1, SCREEPS_STR roomName2, bool continuous = false);
 			
-			const char* getTerrainAt(int x, int y, SCREEPS_STR roomName, RoomPosition pos);
+			const char* getTerrainAt(int x, int y, SCREEPS_STR roomName, RoomPosition *pos);
 			
 			int getWorldSize();
 			
@@ -79,6 +83,7 @@ namespace Screeps {
 		class Market {
 		public:
 			Market();
+			Market(emscripten::val market);
 		
 		public:
 			int credits;
@@ -166,10 +171,10 @@ namespace Screeps {
 		CPU cpu;
 		std::map<SCREEPS_STR, Creep> creeps;
 		std::map<SCREEPS_STR, Flag> flags;
-		GCL_Struct gcl;
+		GCL gcl;
 		Map map;
 		Market market;
-		std::map<val, int> resources;
+		std::map<emscripten::val, int> resources;
 		std::map<SCREEPS_STR, Room> rooms;
 		Shard shard;
 		std::map<SCREEPS_STR, StructureSpawn> spawns;

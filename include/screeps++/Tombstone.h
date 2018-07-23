@@ -6,18 +6,20 @@
 #include <emscripten/val.h>
 
 #include "RoomObject.h"
-#include "Creep.h"
 
 namespace Screeps {
+	class Creep;
+
 	class Tombstone : public RoomObject {
 	public:
 		Tombstone();
+		Tombstone(emscripten::val tombstone);
 
 	public:
-		Creep creep;
+		Creep *creep;
 		int deathTime;
 		SCREEPS_STR id;
-		val store;
+		emscripten::val *store;
 		int ticksToDecay;
 	};
 }

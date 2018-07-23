@@ -8,10 +8,11 @@
 namespace Screeps {
 	class StructureContainer : public Structure {
 	public:
-		Structure();
+		StructureContainer();
+		StructureContainer(emscripten::val structureContainer);
 
 	public:
-		val store;
+		emscripten::val *store;
 		int storeCapacity;
 		int ticksToDecay;
 	};

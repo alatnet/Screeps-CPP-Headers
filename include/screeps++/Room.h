@@ -5,40 +5,40 @@
 #include <emscripten.h>
 #include <emscripten/val.h>
 #include <vector>
-#include <function>
+#include <functional>
 
-#include "RoomPosition.h"
-#include "StructureController.h"
-#include "StructureStorage.h"
-#include "StructureTerminal.h"
-#include "RoomVisual.h"
 #include "PathFinder.h"
-#include "Creep.h"
-#include "Structure.h"
-#include "Resource.h"
-#include "Source.h"
-#include "Mineral.h"
-#include "Flag.h"
-#include "ConstructionSite.h"
-#include "Nuke.h"
-#include "Tombstone.h"
 
 namespace Screeps {
 	class Room;
+	class RoomPosition;
+	class StructureController;
+	class StructureStorage;
+	class StructureTerminal;
+	class RoomVisual;
+	class Creep;
+	class Structure;
+	class Resource;
+	class Source;
+	class Mineral;
+	class Flag;
+	class ConstructionSite;
+	class Nuke;
+	class Tombstone;
 
 	struct RoomOpts {
 		bool ignoreCreeps;
 		bool ignoreDestructibleStructures;
 		bool ignoreRoads;
-		std::function<void(SCREEPS_STR, CostMatrix)> costCallback;
+		std::function<void(SCREEPS_STR, PathFinder::CostMatrix*)> costCallback;
 		union {
-			Room rooms;
-			RoomPosition positions;
+			Room *rooms;
+			RoomPosition *positions;
 		} ignore;
 
 		union {
-			Room rooms;
-			RoomPosition positions;
+			Room *rooms;
+			RoomPosition *positions;
 		} avoid;
 		float maxOps;
 		float heuristicWeight;
@@ -50,15 +50,15 @@ namespace Screeps {
 		
 		RoomOpts(){
 			this->ignoreCreeps = false;
-			this->ignoreDestructibleStructure = false;
+			this->ignoreDestructibleStructures = false;
 			this->ignoreRoads = false;
 			this->costCallback = nullptr;
-			this->ignore.positions = RoomPosition();
-			this->avoid.positions = RoomPosition();
+			this->ignore.positions = nullptr;
+			this->avoid.positions = nullptr;
 			this->maxOps = 2000;
 			this->heuristicWeight = 1.2;
 			this->serialize = false;
-			this->maxRooms 16;
+			this->maxRooms = 16;
 			this->range = 0;
 			this->plainCost = 1;
 			this->swampCost = 5;
@@ -68,32 +68,33 @@ namespace Screeps {
 	class Room {
 	public:
 		Room();
+		Room(emscripten::val room);
 
 	public:
-		StructureController controller;
+		StructureController *controller;
 		int energyAvailable;
 		int energyCapacityAvailable;
-		val memory;
+		emscripten::val *memory;
 		SCREEPS_STR name;
-		StructureStorage storage;
-		StructureTerminal terminal;
-		RoomVisual visual;
+		StructureStorage *storage;
+		StructureTerminal *terminal;
+		RoomVisual *visual;
 
 	public:
-		static SCREEPS_STR serializePath(val path); //FIGURE THIS OUT!!!
-		static val deserializePath(SCREEPS_STR path);
+		static SCREEPS_STR serializePath(emscripten::val path); //FIGURE THIS OUT!!!
+		static emscripten::val *deserializePath(SCREEPS_STR path);
 
 	public:
 		int createConstructionSite(int x, int y, SCREEPS_STR structureType, SCREEPS_STR name="");
-		int createConstructionSite(RoomPosition pos, SCREEPS_STR structureType, SCREEPS_STR name="");
+		int createConstructionSite(RoomPosition *pos, SCREEPS_STR structureType, SCREEPS_STR name="");
 		
 		int createFlag(int x, int y, SCREEPS_STR name="", SCREEPS_STR color="", SCREEPS_STR secondaryColor="");
-		int createFlag(RoomPosition pos, SCREEPS_STR name="", SCREEPS_STR color="", SCREEPS_STR secondaryColor="");
+		int createFlag(RoomPosition *pos, SCREEPS_STR name="", SCREEPS_STR color="", SCREEPS_STR secondaryColor="");
 		
-		std::vector<void*> find(int type, val opts);
+		std::vector<void*> find(int type, emscripten::val opts);
 		
 		int findExitTo(SCREEPS_STR room);
-		int findExitTo(Room room);
+		int findExitTo(Room *room);
 		
 		struct FindPathRet {
 			int x;
@@ -108,8 +109,8 @@ namespace Screeps {
 			bool ignoreDestructibleStructures;
 			bool ignoreRoads;
 			std::function<void(SCREEPS_STR, PathFinder::CostMatrix)> costCallback;
-			std::vector<RoomPosition> ignore;
-			std::vector<RoomPosition> avoid;
+			std::vector<RoomPosition*> ignore;
+			std::vector<RoomPosition*> avoid;
 			int maxOps;
 			float heuristicWeight;
 			bool serialize;
@@ -133,31 +134,31 @@ namespace Screeps {
 			};
 		};
 		
-		std::vector<FindPathRet> findPath(RoomPosition fromPos, RoomPosition toPos, FindPathOpts opts = FindPathOpts());
+		std::vector<FindPathRet> findPath(RoomPosition *fromPos, RoomPosition *toPos, FindPathOpts opts = FindPathOpts());
 		
-		RoomPosition getPositionAt(int x, int y);
+		RoomPosition *getPositionAt(int x, int y);
 		
 		struct lookAtRet {
 			SCREEPS_STR type;
 			union {
-				Creep creep;
-				Structure structure;
-				Resource resource;
-				Source source;
-				Mineral mineral;
-				Flag flag;
-				ConstructionSite constructionSite;
-				Nuke nuke;
+				Creep *creep;
+				Structure *structure;
+				Resource *resource;
+				Source *source;
+				Mineral *mineral;
+				Flag *flag;
+				ConstructionSite *constructionSite;
+				Nuke *nuke;
 				SCREEPS_STR terrain;
-				Tombstone tombstone;
+				Tombstone *tombstone;
 			};
 		};
 		
 		std::vector<lookAtRet> lookAt(int x, int y);
-		std::vector<lookAtRet> lookAt(RoomPosition target);
+		std::vector<lookAtRet> lookAt(RoomPosition *target);
 
-		/*std::map<int, std::map<int, lookAtRet>>*/ val lookAtArea(int top, int left, int bottom, int right, bool asArray = false);
+		/*std::map<int, std::map<int, lookAtRet>>*/ emscripten::val *lookAtArea(int top, int left, int bottom, int right, bool asArray = false);
 		
-		val lookForAtArea(SCREEPS_STR type, int top, int left, int bottom, int right, bool asArray = false);
+		emscripten::val *lookForAtArea(SCREEPS_STR type, int top, int left, int bottom, int right, bool asArray = false);
 	};
 }

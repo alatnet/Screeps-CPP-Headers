@@ -1,20 +1,25 @@
 #pragma once
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "OwnedStructure.h"
-#include "Creep.h"
 
 namespace Screeps {
-	class StuctureTower : public OwnedStructure {
+	class Creep;
+
+	class StructureTower : public OwnedStructure {
 	public:
-		StuctureTower();
+		StructureTower();
+		StructureTower(emscripten::val structureTower);
 
 	public:
 		int energy;
 		int energyCapacity;
 
 	public:
-		int attack(Creep target);
-		int heal(Creep target);
-		int repair(Structure target);
+		int attack(Creep *target);
+		int heal(Creep *target);
+		int repair(Structure *target);
 	};
 }

@@ -2,12 +2,16 @@
 
 #include "Common.h"
 
+#include <emscripten.h>
+#include <emscripten/val.h>
+
 #include "OwnedStructure.h"
 
 namespace Screeps {
 	class StructurePowerSpawn : public OwnedStructure {
 	public:
 		StructurePowerSpawn();
+		StructurePowerSpawn(emscripten::val structurePowerSpawn);
 
 	public:
 		int energy;

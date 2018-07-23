@@ -11,10 +11,11 @@ namespace Screeps {
 	class StructureTerminal : public OwnedStructure {
 	public:
 		StructureTerminal();
+		StructureTerminal(emscripten::val structureTerminal);
 
 	public:
 		int cooldown;
-		val store;
+		emscripten::val *store;
 		int storeCapacity;
 
 	public:
